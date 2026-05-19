@@ -2,8 +2,10 @@ This project is a WIP and the end-result will be a home-made version of the Disc
 
 This project is mainly for me to learn some more advanced C skills and learn about how to handle larger C projects.
 
-What Is Included:
+What Is / Will Be Included:
 * Library for Complex Numbers + Arithmetic
 * Library for Discrete, Finite Sinusoids
 * Library for Matrix / Vector Operations + Vector Transformations
 * Library for the DFT / FFT Algorithms 
+* Unit Tests for Each Library 
+* Application to Use the DFT
