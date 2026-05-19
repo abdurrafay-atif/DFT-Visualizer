@@ -1,6 +1,6 @@
 #include <assert.h> // for testing only
-#include "../include/sinusoids/sinusoids.h"
-#include "../include/sinusoids/sinusoids_test.h"
+#include "../include/src/sinusoids.h"
+#include "../include/tests/sinusoids_test.h"
 
 int main()
 {

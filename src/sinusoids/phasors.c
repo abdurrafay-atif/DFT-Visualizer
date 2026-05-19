@@ -1,4 +1,4 @@
-#include "../include/sinusoids/sinusoids.h"
+#include "../include/src/sinusoids.h"
 
 // uses the amplitude & phase of the sinusoid to convert it to a complex number (its phasor)
 // does not return the angular frequency

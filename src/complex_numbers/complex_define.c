@@ -1,5 +1,5 @@
 // this file consists of functions for defining complex numbers
-#include "../include/complex_numbers/complex.h"
+#include "../include/src/complex.h"
 
 // defines the complex number struct based on rectangular form
 // this function fills in the "modulus" & "angle" fields through the following formulas:
@@ -7,8 +7,13 @@
 // ∠z = arctan(imaginary / real) (radians)
 // Note that if the real part is negative, PI is added to the angle
 // The angle is always defined within 0 to 2 * PI; another function should be used to re-calibrate to -pi to pi
-void complex_num_init(complex_number_t *complex_number, double real, double imaginary)
+int complex_num_init(complex_number_t *complex_number, double real, double imaginary)
 {
+    // error-handling
+    if(complex_number == NULL)
+    {
+        return 1;
+    }
     // set fields for parameters
     complex_number->real = real;
     complex_number->imaginary = imaginary;
@@ -18,14 +23,21 @@ void complex_num_init(complex_number_t *complex_number, double real, double imag
     complex_number->angle = atan2(imaginary, real);
     // re-calibrate angle
     complex_number->angle = normalize_angle(complex_number->angle);
+    return 0;
 }
 
 // defines the complex number struct based on polar form
 // fills "real" & "imaginary" fields based on passed in parameters
 // a = modulus*cos(angle)
 // b = modulus*sine(angle)
-void complex_num_rev_init(complex_number_t *complex_number, double modulus, double angle)
+// note: if negative modulus given, function returns error value
+int complex_num_rev_init(complex_number_t *complex_number, double modulus, double angle)
 {
+    // error-handling
+    if(complex_number == NULL || modulus < 0)
+    {
+        return 1;
+    }
     // re-calibrate angle
     angle = normalize_angle(angle);
     // set the fields accordingly
@@ -33,6 +45,7 @@ void complex_num_rev_init(complex_number_t *complex_number, double modulus, doub
     complex_number->imaginary = modulus * sin(angle);
     complex_number->modulus = modulus;
     complex_number->angle = angle;
+    return 0;
 }
 
 // places angle in 0 to 2*PI range

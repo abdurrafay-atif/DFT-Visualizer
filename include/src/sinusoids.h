@@ -1,6 +1,9 @@
+#ifndef SINUSOIDS_H 
+#define SINUSOIDS_H 
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "../complex_numbers/complex.h"
+#include "complex.h"
 
 typedef struct 
 {
@@ -25,3 +28,5 @@ void print_full_sinusoid(sinusoid_t sinusoid, int format);
 // phasors
 void convert_sinusoid_to_complex_number(complex_number_t *complex_number, sinusoid_t sinusoid);
 sinusoid_t *add_sinusoids(sinusoid_t sinusoid_1, sinusoid_t sinusoid_2);
+
+#endif

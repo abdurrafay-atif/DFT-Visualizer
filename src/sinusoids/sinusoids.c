@@ -1,4 +1,4 @@
-#include "../include/sinusoids/sinusoids.h"
+#include "../include/src/sinusoids.h"
 
 // constructs the sinusoid based on struct parameters
 sinusoid_t *construct_sinusoid(double amplitude, double ang_freq, double phase, int num_samples)
