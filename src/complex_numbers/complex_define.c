@@ -60,7 +60,7 @@ double normalize_angle(double angle)
             angle = angle + 2 * M_PI;
         }
         // subtract from the angle if it is over 2 * PI
-        if(angle > 2 * M_PI)
+        if(angle >= 2 * M_PI)
         {
             angle = angle - 2 * M_PI;
         }

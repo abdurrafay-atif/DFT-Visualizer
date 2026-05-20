@@ -8,6 +8,7 @@ int num_tests_passed;
 // tests all files in src/complex_numbers
 int main()
 {
+    printf("Running complex_numbers_test.c ...\n");
     num_tests_passed = 0;
     test_define_rect_to_polar_both_positive();
     test_define_rect_to_polar_imaginary_negative();

@@ -3,6 +3,12 @@
 // constructs the sinusoid based on struct parameters
 sinusoid_t *construct_sinusoid(double amplitude, double ang_freq, double phase, int num_samples)
 {
+    // error-handling
+    if(amplitude < 0 || num_samples < 1)
+    {
+        return NULL;
+    }
+    // heap allocate a new sinusoid_t
     sinusoid_t *sinusoid = malloc(sizeof(sinusoid_t));
     // normalize angular frequency & phase
     ang_freq = normalize_angle(ang_freq);

@@ -28,10 +28,17 @@ void complex_print(complex_number_t complex_number, int format)
 {
     switch(format)
     {
-        case RECT: complex_print_rect(complex_number);
-        case POLAR: complex_print_polar(complex_number);
-        case EXP: complex_print_exponential(complex_number);
+        case RECT: 
+            complex_print_rect(complex_number);
+            break;
+        case POLAR: 
+            complex_print_polar(complex_number);
+            break;
+        case EXP: 
+            complex_print_exponential(complex_number);
+            break;
         default: complex_print_rect(complex_number);
+            break;
     }
 }
 
