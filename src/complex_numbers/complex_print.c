@@ -5,21 +5,21 @@
 // prints the complex number in this form: "a +j*(b)"
 void complex_print_rect(complex_number_t complex_number)
 {
-    printf("%lf + j*(%lf)", complex_number.real, complex_number.imaginary);
+    printf("%.2lf + j*(%.2lf)", complex_number.real, complex_number.imaginary);
 }
 
 // prints the complex number in this form: "|z|∠z"
 // converts the angle to degrees
 void complex_print_polar(complex_number_t complex_number)
 {
-    printf("|%lf|∠%lf°", complex_number.modulus, complex_number.angle * 180 / M_PI);
+    printf("|%.2lf|∠%.2lf°", complex_number.modulus, complex_number.angle * 180 / M_PI);
 }
 
 // prints the complex number in this form: "z*e^(j*∠z)"
 // angle in radians here
 void complex_print_exponential(complex_number_t complex_number)
 {
-    printf("%lf*e^(j*(%lf))", complex_number.modulus, complex_number.angle);
+    printf("%.2lf*e^(j*(%.2lf))", complex_number.modulus, complex_number.angle);
 }
 
 // prints the complex number in a specified format

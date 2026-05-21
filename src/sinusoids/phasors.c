@@ -2,9 +2,9 @@
 
 // uses the amplitude & phase of the sinusoid to convert it to a complex number (its phasor)
 // does not return the angular frequency
-void convert_sinusoid_to_complex_number(complex_number_t *complex_number, sinusoid_t sinusoid)
+int convert_sinusoid_to_complex_number(complex_number_t *complex_number, sinusoid_t sinusoid)
 {
-    complex_num_rev_init(complex_number, sinusoid.amplitude, sinusoid.phase);
+    return complex_num_rev_init(complex_number, sinusoid.amplitude, sinusoid.phase);
 }
 
 // adds the two passed in sinusoids via phasors

@@ -3,7 +3,7 @@ CC = gcc
 
 # flags when compiling programs
 IFLAGS = -MMD -MP
-CFLAGS = -Wall -Werror -Iinclude $(IFLAGS)
+CFLAGS = -Wall -Wextra -Werror -Iinclude $(IFLAGS)
 CFLAGS_TEST = -Wall -Werror -g -Iinclude $(IFLAGS)
 
 # directory names

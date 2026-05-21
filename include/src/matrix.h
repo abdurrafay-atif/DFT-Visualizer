@@ -15,6 +15,7 @@ cmatrix_t;
 
 // defining matrix
 cmatrix_t *cmatrix_init(int rows, int cols);
+int matrix_free(cmatrix_t *m);
 
 // matrix operations
 int cmatrix_place(cmatrix_t *m, complex_number_t cn, int row, int col);

@@ -48,6 +48,12 @@ int complex_num_rev_init(complex_number_t *complex_number, double modulus, doubl
     return 0;
 }
 
+// sets the complex_number to (0, 0); helper function
+int complex_num_empty(complex_number_t *complex_number)
+{
+    return complex_num_init(complex_number, 0, 0);
+}
+
 // places angle in 0 to 2*PI range
 double normalize_angle(double angle)
 {

@@ -36,10 +36,17 @@ sinusoid_t *construct_sinusoid_from_complex_number
 }
 
 // free's all malloc'd material in the sinusoid_t struct
-void sinusoid_free(sinusoid_t *sinusoid)
+int sinusoid_free(sinusoid_t *sinusoid)
 {
+    // error-handling
+    if(sinusoid == NULL)
+    {
+        return 1;
+    }
+    // free heap-allocated material
     free(sinusoid->samples);
     free(sinusoid);
+    return 0;
 }
 
 // prints only the sinusoid sample components of the sinusoid

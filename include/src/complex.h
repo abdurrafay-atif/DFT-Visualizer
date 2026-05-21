@@ -25,6 +25,7 @@ complex_number_t;
 // defining complex numbers
 int complex_num_init(complex_number_t *complex_number, double real, double imaginary);
 int complex_num_rev_init(complex_number_t *complex_number, double modulus, double angle);
+int complex_num_empty(complex_number_t *complex_number);
 double normalize_angle(double angle);
 
 // printing complex numbers
