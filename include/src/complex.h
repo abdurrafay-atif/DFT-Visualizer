@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 
-// there are three ways complex numbers can be presented
+// tags for each way a complex number can be represented
 enum Complex_Format
 {
     RECT = 0,

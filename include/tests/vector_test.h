@@ -1,9 +1,9 @@
 // defining vectors
 void test_cvec_empty_init();
 void test_cvec_init();
-void test_cvec_conj();
 
 // vector computations
+void test_cvec_conj();
 void test_cvec_sum();
 void test_cvec_dot();
 void test_cvec_norm();

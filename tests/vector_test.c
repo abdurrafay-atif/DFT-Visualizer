@@ -40,7 +40,7 @@ cvector_t *cvec_from_file(char *filename)
         double real;
         double imaginary;
         fscanf(file, "%lf + j*(%lf)", &real, &imaginary);
-        complex_num_init(&vec->vec[ele], real, imaginary);
+        cvec_place(vec, ele, real, imaginary);
     }
     fclose(file);
     return vec;
@@ -52,6 +52,7 @@ int main()
     num_tests_passed = 0;
     test_cvec_empty_init();
     test_cvec_init();
+    test_cvec_conj();
     printf("All %d tests were successful!\n", num_tests_passed);
     return 0;
 }
@@ -71,7 +72,6 @@ void test_cvec_empty_init()
 void test_cvec_init()
 {
     cvector_t *vec = cvec_from_file("tests/files/complex_nums_1.txt");
-    cvec_print(*vec, RECT);
     assert(vec != NULL);
     assert(vec->size == 3);
     assert(vec->vec[0].real == 2.0 && vec->vec[0].imaginary == 0.0);
@@ -83,5 +83,14 @@ void test_cvec_init()
 
 void test_cvec_conj()
 {
-
+    cvector_t *vec = cvec_from_file("tests/files/complex_nums_1.txt");
+    assert(vec != NULL);
+    cvector_t *conj_vec = cvec_conj(*vec);
+    assert(conj_vec->size == 3);
+    assert(conj_vec->vec[0].real == 2.0 && conj_vec->vec[0].imaginary == 0.0);
+    assert(conj_vec->vec[1].real == 3.0 && conj_vec->vec[1].imaginary == -1.0);
+    assert(conj_vec->vec[2].real == 0.0 && conj_vec->vec[2].imaginary == -5.0);
+    cvec_free(vec);
+    cvec_free(conj_vec);
+    num_tests_passed++;
 }

@@ -27,6 +27,8 @@ double cvec_norm(cvector_t v);
 int cvec_project(complex_number_t *cn, cvector_t v1, cvector_t v2); // projection of v2 onto v1
 
 // vector operations
+int cvec_place(cvector_t *v, int ele, double real, double imaginary);
+int cvec_rev_place(cvector_t *v, int ele, double modulus, double angle);
 cvector_t *cvec_scale(cvector_t v, complex_number_t scale);
 cvector_t *cvec_add(cvector_t v1, cvector_t v2);
 cvector_t *cvec_element_prod(cvector_t v1, cvector_t v2);

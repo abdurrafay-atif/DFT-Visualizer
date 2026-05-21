@@ -32,19 +32,6 @@ cvector_t *cvec_init_empty(int size)
     return vec;
 }
 
-// applies the complex conjugate onto each element of 'v,' stores into a new vector
-cvector_t *cvec_conj(cvector_t v)
-{
-    // initialize the conjugate vector
-    cvector_t *conj = cvec_init(v.vec, v.size);
-    // apply conjugate to each element
-    for(int ele = 0; ele < conj->size; ele ++)
-    {
-        complex_conjugate(&conj->vec[ele], conj->vec[ele]);
-    }
-    return conj;
-}
-
 // free()'s all malloc()'d material in the cvector_t struct
 int cvec_free(cvector_t *v)
 {  
