@@ -1,8 +1,7 @@
-#ifndef CMATRIX_H
-#define CMATRIX_H
+#ifndef CONVOLUTION_H
+#define CONVOLUTION_H
 
-#include <stdlib.h>
-#include "complex.h"
+#include "cvector.h"
 
 // struct representing a complex N x M matrix
 typedef struct 
@@ -13,15 +12,15 @@ typedef struct
 }
 cmatrix_t;
 
-// defining matrix
+// matrix & matrix ops
 cmatrix_t *cmatrix_init(int rows, int cols);
 int matrix_free(cmatrix_t *m);
-
-// matrix operations
 int cmatrix_place(cmatrix_t *m, complex_number_t cn, int row, int col);
-cmatrix_t *cmatrix_add(cmatrix_t m1, cmatrix_t m2);
-cmatrix_t *cmatrix_scale(cmatrix_t m, double scale);
+int cmatrix_fill_col(cmatrix_t *m, cvector_t v, int col);
 cmatrix_t *cmatrix_multiply(cmatrix_t m1, cmatrix_t m2);
 
-#endif
+// convolution
+cmatrix_t *convolution_mat(cvector_t v1);
+cvector_t *circ_convolve(cvector_t v1, cvector_t v2);
 
+#endif

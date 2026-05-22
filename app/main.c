@@ -1,4 +1,4 @@
-#include "app.h"
+#include "../include/app/app.h"
 
 // THIS IS AN INTERACTIVE DFT / IFFT VISUALIZER
 // ARGUMENTS:
