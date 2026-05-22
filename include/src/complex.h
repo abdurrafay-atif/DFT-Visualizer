@@ -1,8 +1,8 @@
 #ifndef COMPLEX_H  
 #define COMPLEX_H  
 
-#include <stdio.h>
-#include <math.h>
+#include <stdio.h> // for printing functions
+#include <math.h> // for floating point library functions
 
 // tags for each way a complex number can be represented
 enum Complex_Format
@@ -12,7 +12,7 @@ enum Complex_Format
     EXP = 2,
 };
 
-// a struct which represents a complex number + its modulus & angle
+// a struct which represents a complex number in cartesian / polar form
 typedef struct 
 {
     double real;
@@ -23,26 +23,25 @@ typedef struct
 complex_number_t;
 
 // defining complex numbers
-int complex_num_init(complex_number_t *complex_number, double real, double imaginary);
-int complex_num_rev_init(complex_number_t *complex_number, double modulus, double angle);
-int complex_num_empty(complex_number_t *complex_number);
+int complex_num_init(complex_number_t *cn, double real, double imaginary);
+int complex_num_rev_init(complex_number_t *cn, double modulus, double angle);
+int complex_num_empty(complex_number_t *cn);
 double normalize_angle(double angle);
 
 // printing complex numbers
-void complex_print_rect(complex_number_t complex_number);
-void complex_print_polar(complex_number_t complex_number);
-void complex_print_exponential(complex_number_t complex_number);
-void complex_print(complex_number_t complex_number, int format);
-void complex_print_all_forms(complex_number_t complex_number);
+void complex_print_rect(complex_number_t cn, FILE *file);
+void complex_print_polar(complex_number_t cn, FILE *file);
+void complex_print_exp(complex_number_t cn, FILE *file);
+void complex_print(complex_number_t cn, FILE *file, int format);
 
 // complex number arithmetic
-int complex_scale(complex_number_t *scale, complex_number_t complex_number, double scaling_factor);
-int complex_add(complex_number_t *sum, complex_number_t complex_number_1, complex_number_t complex_number_2);
-int complex_subtract(complex_number_t *diff, complex_number_t complex_number_1, complex_number_t complex_number_2);
-int complex_multiply(complex_number_t *product, complex_number_t complex_number_1, complex_number_t complex_number_2);
-int complex_divide(complex_number_t *quotient, complex_number_t complex_number_1, complex_number_t complex_number_2);
-int complex_pow(complex_number_t *result, complex_number_t complex_number, double power);
-int complex_inverse(complex_number_t *inverse, complex_number_t complex_number);
-int complex_conjugate(complex_number_t *conjugate, complex_number_t complex_number);
+int complex_scale(complex_number_t *scale, complex_number_t cn, double scaling_factor);
+int complex_add(complex_number_t *sum, complex_number_t cn1, complex_number_t cn2);
+int complex_sub(complex_number_t *diff, complex_number_t cn1, complex_number_t cn2);
+int complex_prod(complex_number_t *prod, complex_number_t cn1, complex_number_t cn2);
+int complex_div(complex_number_t *quot, complex_number_t cn1, complex_number_t cn2);
+int complex_pow(complex_number_t *res, complex_number_t cn, double power);
+int complex_inv(complex_number_t *inv, complex_number_t cn);
+int complex_conj(complex_number_t *conj, complex_number_t cn);
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef CMATRIX_H
+#define CMATRIX_H
 
 #include <stdlib.h>
 #include "complex.h"

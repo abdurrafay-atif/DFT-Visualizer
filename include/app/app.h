@@ -1,7 +1,7 @@
 #ifndef APP_H
 #define APP_H
 
-#include "dft.h"
+#include "src/dft.h"
 
 // main functions
 cvector_t *read_vector_from_file(char *filename);

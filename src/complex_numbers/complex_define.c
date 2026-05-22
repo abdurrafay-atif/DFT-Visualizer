@@ -7,22 +7,22 @@
 // ∠z = arctan(imaginary / real) (radians)
 // Note that if the real part is negative, PI is added to the angle
 // The angle is always defined within 0 to 2 * PI; another function should be used to re-calibrate to -pi to pi
-int complex_num_init(complex_number_t *complex_number, double real, double imaginary)
+int complex_num_init(complex_number_t *cn, double real, double imaginary)
 {
     // error-handling
-    if(complex_number == NULL)
+    if(cn == NULL)
     {
         return 1;
     }
     // set fields for parameters
-    complex_number->real = real;
-    complex_number->imaginary = imaginary;
+    cn->real = real;
+    cn->imaginary = imaginary;
     // calculate & set the modulus
-    complex_number->modulus = sqrt(pow(real, 2) + pow(imaginary, 2));
+    cn->modulus = sqrt(pow(real, 2) + pow(imaginary, 2));
     // calculate & set the angle (atan2() performs addition of PI when necessary)
-    complex_number->angle = atan2(imaginary, real);
+    cn->angle = atan2(imaginary, real);
     // re-calibrate angle
-    complex_number->angle = normalize_angle(complex_number->angle);
+    cn->angle = normalize_angle(cn->angle);
     return 0;
 }
 
@@ -31,27 +31,27 @@ int complex_num_init(complex_number_t *complex_number, double real, double imagi
 // a = modulus*cos(angle)
 // b = modulus*sine(angle)
 // note: if negative modulus given, function returns error value
-int complex_num_rev_init(complex_number_t *complex_number, double modulus, double angle)
+int complex_num_rev_init(complex_number_t *cn, double modulus, double angle)
 {
     // error-handling
-    if(complex_number == NULL || modulus < 0)
+    if(cn == NULL || modulus < 0)
     {
         return 1;
     }
     // re-calibrate angle
     angle = normalize_angle(angle);
     // set the fields accordingly
-    complex_number->real = modulus * cos(angle);
-    complex_number->imaginary = modulus * sin(angle);
-    complex_number->modulus = modulus;
-    complex_number->angle = angle;
+    cn->real = modulus * cos(angle);
+    cn->imaginary = modulus * sin(angle);
+    cn->modulus = modulus;
+    cn->angle = angle;
     return 0;
 }
 
-// sets the complex_number to (0, 0); helper function
-int complex_num_empty(complex_number_t *complex_number)
+// sets the cn to (0, 0); helper function
+int complex_num_empty(complex_number_t *cn)
 {
-    return complex_num_init(complex_number, 0, 0);
+    return complex_num_init(cn, 0, 0);
 }
 
 // places angle in 0 to 2*PI range

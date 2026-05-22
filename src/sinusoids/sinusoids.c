@@ -27,14 +27,6 @@ sinusoid_t *construct_sinusoid(double amplitude, double ang_freq, double phase, 
     return sinusoid;
 }
 
-// converts the given complex number to a sinusoid
-// angular frequency & # of samples required for construction
-sinusoid_t *construct_sinusoid_from_complex_number
-    (complex_number_t complex_number, double ang_freq, int num_samples)
-{
-    return construct_sinusoid(complex_number.modulus, ang_freq, complex_number.angle, num_samples);
-}
-
 // free's all malloc'd material in the sinusoid_t struct
 int sinusoid_free(sinusoid_t *sinusoid)
 {
@@ -49,25 +41,9 @@ int sinusoid_free(sinusoid_t *sinusoid)
     return 0;
 }
 
-// prints only the sinusoid sample components of the sinusoid
-void print_sinusoid_vector(sinusoid_t sinusoid, int format)
+// prints the sinusoid in this form: A*cos((w)*n + phi)
+// does not print \n (must be done manually)
+void print_sinusoid_as_cosine(sinusoid_t sinusoid, FILE *file)
 {
-    printf("[");
-    for(int sample = 0; sample < sinusoid.num_samples; sample++)
-    {
-        complex_print(sinusoid.samples[sample], format);
-        printf(" ");
-    }
-    printf("]\n");
-}
-
-// prints all information about the passed in sinusoid
-void print_full_sinusoid(sinusoid_t sinusoid, int format)
-{
-    printf("Amplitude: %lf\n", sinusoid.amplitude);
-    printf("Angular Frequency: %lf\n", sinusoid.amplitude);
-    printf("Phase: %lf\n", sinusoid.amplitude);
-    printf("# of Samples: %lf\n", sinusoid.amplitude);
-    printf("Sample Vector: ");
-    print_sinusoid_vector(sinusoid, format);
+    fprintf(file, "%lf*cos((%lf)*n + %lf)", sinusoid.amplitude, sinusoid.ang_freq, sinusoid.phase);
 }

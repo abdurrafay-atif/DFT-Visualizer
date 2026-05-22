@@ -157,7 +157,7 @@ void test_complex_sub()
     complex_number_t c2;
     complex_num_init(&c2, 7, 12);
     complex_number_t sub;
-    int ret1 = complex_subtract(&sub, c1, c2);
+    int ret1 = complex_sub(&sub, c1, c2);
     assert(ret1 == 0);
     assert(sub.real == 4 - 7);
     assert(sub.imaginary == 3 - 12);
@@ -173,7 +173,7 @@ void test_complex_prod()
     complex_number_t c2;
     complex_num_init(&c2, 7, 12);
     complex_number_t prod;
-    int ret1 = complex_multiply(&prod, c1, c2);
+    int ret1 = complex_prod(&prod, c1, c2);
     assert(ret1 == 0);
     assert(prod.real == (c1.modulus * c2.modulus) * cos(c1.angle + c2.angle));
     assert(prod.imaginary == (c1.modulus * c2.modulus) * sin(c1.angle + c2.angle));
@@ -203,7 +203,7 @@ void test_complex_div()
     complex_number_t c2;
     complex_num_init(&c2, 7, 12);
     complex_number_t quot;
-    int ret1 = complex_divide(&quot, c1, c2);
+    int ret1 = complex_div(&quot, c1, c2);
     assert(ret1 == 0);
     assert(quot.real == (c1.modulus / c2.modulus) * cos(c1.angle - c2.angle + 2 * M_PI));
     assert(quot.imaginary == (c1.modulus / c2.modulus) * sin(c1.angle - c2.angle + 2 * M_PI));
@@ -217,7 +217,7 @@ void test_complex_conj()
     complex_number_t c1;
     complex_num_init(&c1, 4, 3);
     complex_number_t conj;
-    int ret1 = complex_conjugate(&conj, c1);
+    int ret1 = complex_conj(&conj, c1);
     assert(ret1 == 0);
     assert(conj.real == c1.real);
     assert(conj.imaginary == -c1.imaginary);
