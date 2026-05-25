@@ -29,10 +29,10 @@ int complex_num_empty(complex_number_t *cn);
 double normalize_angle(double angle);
 
 // printing complex numbers
-void complex_print_rect(complex_number_t cn, FILE *file);
-void complex_print_polar(complex_number_t cn, FILE *file);
-void complex_print_exp(complex_number_t cn, FILE *file);
-void complex_print(complex_number_t cn, FILE *file, int format);
+int complex_print_rect(complex_number_t cn, FILE *file);
+int complex_print_polar(complex_number_t cn, FILE *file);
+int complex_print_exp(complex_number_t cn, FILE *file);
+int complex_print(complex_number_t cn, FILE *file, int format);
 
 // complex number arithmetic
 int complex_scale(complex_number_t *scale, complex_number_t cn, double scaling_factor);

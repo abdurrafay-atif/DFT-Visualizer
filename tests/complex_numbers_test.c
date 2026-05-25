@@ -2,226 +2,220 @@
 #include "../include/src/complex.h"
 #include "../include/tests/complex_numbers_test.h"
 
-// keep track of # of tests (to show the tests are passing when new ones are added)
-int num_tests_passed;
+const double EPSILON = 1e-6; // for floating point comparisons
+
+// checks if two floating point numbers are very close in equality
+// due to the usage of floating point numbers in complex numbers, this is necessary for testing
+int fequals(double a, double b) 
+{
+    return fabs(a - b) < EPSILON;
+}
 
 // tests all files in src/complex_numbers
 int main()
 {
-    printf("Running complex_numbers_test.c ...\n");
-    num_tests_passed = 0;
-    test_define_rect_to_polar_both_positive();
-    test_define_rect_to_polar_imaginary_negative();
-    test_define_rect_to_polar_real_negative();
-    test_define_rect_to_polar_both_negative();
-    test_define_polar_to_rect();
-    test_define_polar_to_rect_neg_mod();
-    test_define_polar_to_rect_neg_angle();
-    test_define_polar_to_rect_over_angle();
-    test_complex_scale();
-    test_complex_add();
-    test_complex_sub();
-    test_complex_prod();
-    test_complex_pow();
-    test_complex_div();
-    test_complex_conj();
-    printf("All %d tests were successful!\n", num_tests_passed);
+    printf("-------------------------------------------------------------\n");
+    printf("Running complex_numbers_test.c\n");
+    printf("-------------------------------------------------------------\n");
+    test_normalize_angle_no_change();
+    test_normalize_angle_negative_angle();
+    test_normalize_angle_large_negative();
+    test_normalize_angle_over_angle();
+    test_normalize_angle_large_positive();
+    test_normalize_angle_edge_cases();
+    test_complex_num_init_error();
+    test_complex_num_init_both_pos();
+    test_complex_num_init_posneg();
+    test_complex_num_init_negpos();
+    test_complex_num_init_both_neg();
+    test_complex_num_rev_error();
+    test_complex_num_rev();
+    test_complex_num_empty();
+    test_complex_print_rect();
+    printf("-------------------------------------------------------------\n");
+    printf("All tests for complex_numbers_test.c have passed!\n");
+    printf("-------------------------------------------------------------\n\n");
     return 0;
 }
 
-void test_define_rect_to_polar_both_positive()
+// tests the normalize_angle() function when the passed in angle is already normalized
+void test_normalize_angle_no_change()
 {
-    complex_number_t c1;
-    int ret = complex_num_init(&c1, 4, 3);
-    assert(ret == 0);
-    assert(c1.real == 4.0);
-    assert(c1.imaginary == 3.0);
-    assert(c1.modulus == sqrt(pow(4, 2) + pow(3, 2)));
-    assert(c1.angle == atan2(3, 4));
-    num_tests_passed++;
+    double angle = 0.0;
+    for(double test = 0.0; test <= 2 * M_PI; test = test + 0.1)
+    {
+        assert(fequals(angle, normalize_angle(angle)));
+    }
+    printf("Test 'test_normalize_angle_no_change' --> PASSED!\n");
 }
 
-void test_define_rect_to_polar_imaginary_negative()
+// tests the normalize_angle() function when the passed in angle is a small negative value
+void test_normalize_angle_negative_angle()
 {
-    complex_number_t c1;
-    int ret = complex_num_init(&c1, 4, -3);
-    assert(ret == 0);
-    assert(c1.real == 4.0);
-    assert(c1.imaginary == -3.0);
-    assert(c1.modulus == sqrt(pow(4, 2) + pow(-3, 2)));
-    assert(c1.angle == (atan2(-3, 4) + 2 * M_PI));
-    num_tests_passed++;
+    double angle = M_PI * (-1.0 / 3.0);
+    assert(fequals(angle + 2 * M_PI, normalize_angle(angle)));
+    printf("Test 'test_normalize_angle_negative_angle' --> PASSED!\n");
 }
 
-void test_define_rect_to_polar_real_negative()
+
+// tests the normalize_angle() function when the passed in angle is a large negative value
+void test_normalize_angle_large_negative()
 {
-    complex_number_t c1;
-    int ret = complex_num_init(&c1, -4, 3);
-    assert(ret == 0);
-    assert(c1.real == -4.0);
-    assert(c1.imaginary == 3.0);
-    assert(c1.modulus == sqrt(pow(-4, 2) + pow(3, 2)));
-    assert(c1.angle == atan2(3, -4));
-    num_tests_passed++;
+    double angle = M_PI * (-1.0 / 3.0) * 50000.0;
+    assert(fequals(normalize_angle(angle), (4.0 * M_PI) / 3.0));
+    printf("Test 'test_normalize_angle_large_negative' --> PASSED!\n");
 }
 
-void test_define_rect_to_polar_both_negative()
+// tests the normalize_angle() function when the passed in angle is over 2 * PI (but still small)
+void test_normalize_angle_over_angle()
 {
-    complex_number_t c1;
-    int ret = complex_num_init(&c1, -4, -3);
-    assert(ret == 0);
-    assert(c1.real == -4.0);
-    assert(c1.imaginary == -3.0);
-    assert(c1.modulus == sqrt(pow(-4, 2) + pow(-3, 2)));
-    assert(c1.angle == (atan2(-3, -4) + 2 * M_PI));
-    num_tests_passed++;
+    double angle = M_PI * (8.0 / 3.0);
+    assert(fequals(normalize_angle(angle), M_PI * (2.0 / 3.0)));
+    printf("Test 'test_normalize_angle_over_angle' --> PASSED!\n");
 }
 
-void test_define_polar_to_rect()
+// tests the normalize_angle() function when the passed in angle is over 2 * PI (very large angle)
+void test_normalize_angle_large_positive()
 {
-    complex_number_t c1;
-    int ret = complex_num_rev_init(&c1, 4, 2.3);
-    assert(ret == 0);
-    assert(c1.modulus == 4.0);
-    assert(c1.angle == 2.3);
-    assert(c1.real = 4 * cos(2.3));
-    assert(c1.imaginary == 4 * sin(2.3));
-    num_tests_passed++;
+    double angle = M_PI * (8.0 / 3.0) * 50000;
+    assert(fequals(normalize_angle(angle), (4.0 * M_PI) / 3.0));
+    printf("Test 'test_normalize_angle_over_large_angle' --> PASSED!\n");
 }
 
-void test_define_polar_to_rect_neg_mod()
+// tests the 2 * M_PI edge case of the normalize_angle() function (should normalize to 0 degrees)
+void test_normalize_angle_edge_cases()
 {
-    complex_number_t c1;
-    int ret = complex_num_rev_init(&c1, -4, 2.3);
+    double angle = 2 * M_PI;
+    assert(fequals(normalize_angle(angle), 0.0));
+    printf("Test 'test_normalize_angle_edge_cases' --> PASSED!\n");
+}
+
+// tests the complex_num_init() function when given error input
+// cases:
+// cn == NULL
+void test_complex_num_init_error()
+{
+    complex_number_t *error = NULL;
+    int ret = complex_num_init(error, 4, 3);
     assert(ret == 1);
-    num_tests_passed++;
+    printf("Test 'test_complex_num_init_error' --> PASSED!\n");
 }
 
-void test_define_polar_to_rect_neg_angle()
+// tests the complex_num_init() function when given real = +, imag = +
+void test_complex_num_init_both_pos()
 {
-    complex_number_t c1;
-    int ret = complex_num_rev_init(&c1, 4, -8.3);
+    complex_number_t cn;
+    int ret = complex_num_init(&cn, 4, 3);
     assert(ret == 0);
-    assert(c1.modulus == 4.0);
-    assert(c1.angle == (-8.3 + 4 * M_PI));
-    assert(c1.real = 4 * cos((-8.3 + 4 * M_PI)));
-    assert(c1.imaginary == 4 * sin((-8.3 + 4 * M_PI)));
-    num_tests_passed++;
+    assert(fequals(cn.real, 4.0));
+    assert(fequals(cn.imaginary, 3.0));
+    assert(fequals(cn.modulus, 5.0));
+    assert(fequals(cn.angle, 0.64350110879));
+    printf("Test 'test_complex_num_init_both_pos' --> PASSED!\n");
 }
 
-void test_define_polar_to_rect_over_angle()
+// tests the complex_num_init() function when given real = +, imag = -
+void test_complex_num_init_posneg()
 {
-    complex_number_t c1;
-    int ret = complex_num_rev_init(&c1, 4, 13.3);
+    complex_number_t cn;
+    int ret = complex_num_init(&cn, 4, -3);
     assert(ret == 0);
-    assert(c1.modulus == 4.0);
-    assert(c1.angle == (13.3 - 4*M_PI));
-    assert(c1.real = 4 * cos((13.3 - 4*M_PI)));
-    assert(c1.imaginary == 4 * sin((13.3 - 4*M_PI)));
-    num_tests_passed++;
+    assert(fequals(cn.real, 4.0));
+    assert(fequals(cn.imaginary, -3.0));
+    assert(fequals(cn.modulus, 5.0));
+    assert(fequals(cn.angle, 5.63968419839));
+    printf("Test 'test_complex_num_init_posneg' --> PASSED!\n");
 }
 
-void test_complex_scale()
+// tests the complex_num_init() function when given real = -, imag = +
+void test_complex_num_init_negpos()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    int ret1 = complex_scale(&c1, c1, 4);
-    assert(ret1 == 0);
-    assert(c1.real == 4*4);
-    assert(c1.imaginary = 3*4);
-    assert(c1.modulus == (sqrt(pow(4, 2) + pow(3, 2)) * 4));
-    assert(c1.angle == atan2(3, 4));
-    num_tests_passed++;
+    complex_number_t cn;
+    int ret = complex_num_init(&cn, -4, 3);
+    assert(ret == 0);
+    assert(fequals(cn.real, -4.0));
+    assert(fequals(cn.imaginary, 3.0));
+    assert(fequals(cn.modulus, 5.0));
+    assert(fequals(cn.angle, 2.4980915448));
+    printf("Test 'test_complex_num_init_negpos' --> PASSED!\n");
 }
 
-void test_complex_add()
+// tests the complex_num_init() function when given real = -, imag = -
+void test_complex_num_init_both_neg()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t c2;
-    complex_num_init(&c2, 7, 12);
-    complex_number_t sum;
-    int ret1 = complex_add(&sum, c1, c2);
-    assert(ret1 == 0);
-    assert(sum.real == 4 + 7);
-    assert(sum.imaginary == 3 + 12);
-    assert(sum.modulus = (sqrt(pow(4 + 7, 2) + pow(3 + 12, 2))));
-    assert(sum.angle == atan2(3 + 12, 4 + 7));
-    num_tests_passed++;
+    complex_number_t cn;
+    int ret = complex_num_init(&cn, -4, -3);
+    assert(ret == 0);
+    assert(fequals(cn.real, -4.0));
+    assert(fequals(cn.imaginary, -3.0));
+    assert(fequals(cn.modulus, 5.0));
+    assert(fequals(cn.angle, 3.78509376238));
+    printf("Test 'test_complex_num_init_both_neg' --> PASSED!\n");
 }
 
-void test_complex_sub()
+// tests the complex_num_rev_init() function when given error input
+// cases:
+// cn == NULL
+// modulus < 0 (modulus cannot be negative)
+void test_complex_num_rev_error()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t c2;
-    complex_num_init(&c2, 7, 12);
-    complex_number_t sub;
-    int ret1 = complex_sub(&sub, c1, c2);
-    assert(ret1 == 0);
-    assert(sub.real == 4 - 7);
-    assert(sub.imaginary == 3 - 12);
-    assert(sub.modulus = (sqrt(pow(4 - 7, 2) + pow(3 - 12, 2))));
-    assert(sub.angle == (atan2(3 - 12, 4 - 7) + 2 * M_PI));
-    num_tests_passed++;
+    complex_number_t *error = NULL;
+    int ret1 = complex_num_rev_init(error, 5, 0.64350110879);
+    assert(ret1 == 1);
+    complex_number_t not_error;
+    int ret2 = complex_num_rev_init(&not_error, -5, 0.64350110879);
+    assert(ret2 == 1);
+    printf("Test 'test_complex_num_rev_error' --> PASSED!\n");
 }
 
-void test_complex_prod()
+// tests functionality of complex_num_rev_init()
+// normalize_angle(), cos(), & sin() all work as intended, so only need to test for one example
+void test_complex_num_rev()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t c2;
-    complex_num_init(&c2, 7, 12);
-    complex_number_t prod;
-    int ret1 = complex_prod(&prod, c1, c2);
-    assert(ret1 == 0);
-    assert(prod.real == (c1.modulus * c2.modulus) * cos(c1.angle + c2.angle));
-    assert(prod.imaginary == (c1.modulus * c2.modulus) * sin(c1.angle + c2.angle));
-    assert(prod.modulus = (c1.modulus * c2.modulus));
-    assert(prod.angle == (c1.angle + c2.angle));
-    num_tests_passed++;
+    complex_number_t cn;
+    int ret = complex_num_rev_init(&cn, 5, 0.64350110879);
+    assert(ret == 0);
+    assert(fequals(cn.real, 4));
+    assert(fequals(cn.imaginary, 3));
+    assert(fequals(cn.modulus, 5));
+    assert(fequals(cn.angle, 0.64350110879));
+    printf("Test 'test_complex_num_rev' --> PASSED!\n");
 }
 
-void test_complex_pow()
+// tests functionality of complex_num_empty()
+void test_complex_num_empty()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t power;
-    int ret1 = complex_pow(&power, c1, 4);
-    assert(ret1 == 0);
-    assert(power.real == (pow(c1.modulus, 4) * cos(c1.angle * 4)));
-    assert(power.imaginary == (pow(c1.modulus, 4) * sin(c1.angle * 4)));
-    assert(power.modulus == pow(c1.modulus, 4));
-    assert(power.angle == (c1.angle * 4));
-    num_tests_passed++;
+    complex_number_t cn;
+    int ret = complex_num_empty(&cn);
+    assert(ret == 0);
+    assert(fequals(cn.real, 0));
+    assert(fequals(cn.imaginary, 0));
+    assert(fequals(cn.modulus, 0));
+    assert(fequals(cn.angle, 0));
+    printf("Test 'test_complex_num_empty' --> PASSED!\n");
 }
 
-void test_complex_div()
+// tests the functionality of the complex_print_rect() function
+void test_complex_print_rect()
 {
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t c2;
-    complex_num_init(&c2, 7, 12);
-    complex_number_t quot;
-    int ret1 = complex_div(&quot, c1, c2);
-    assert(ret1 == 0);
-    assert(quot.real == (c1.modulus / c2.modulus) * cos(c1.angle - c2.angle + 2 * M_PI));
-    assert(quot.imaginary == (c1.modulus / c2.modulus) * sin(c1.angle - c2.angle + 2 * M_PI));
-    assert(quot.modulus = (c1.modulus / c2.modulus));
-    assert(quot.angle == ((c1.angle - c2.angle) + 2 * M_PI));
-    num_tests_passed++;
+    complex_number_t cn;
+    complex_num_init(&cn, 4, 3);
+    // invalid input
+    FILE *file1 = NULL;
+    int ret1 = complex_print_rect(cn, file1);
+    assert(ret1 == 1);
+    // valid input
+    FILE *file2 = fopen("tests/files/complex_num_rect.txt", "w+");
+    complex_print_rect(cn, file2);
+    fprintf(file2, "\n");
+    fclose(file2);
+    // read the file that was just written into, validate output
+    FILE *file3 = fopen("tests/files/complex_num_rect.txt", "r");
+    double real, imaginary;
+    fscanf(file3, "%lf + j*(%lf)", &real, &imaginary);
+    fclose(file3);
+    assert(fequals(real, 4));
+    assert(fequals(imaginary, 3));
+    printf("Test 'test_complex_print_rect' --> PASSED!\n");
 }
 
-void test_complex_conj()
-{
-    complex_number_t c1;
-    complex_num_init(&c1, 4, 3);
-    complex_number_t conj;
-    int ret1 = complex_conj(&conj, c1);
-    assert(ret1 == 0);
-    assert(conj.real == c1.real);
-    assert(conj.imaginary == -c1.imaginary);
-    assert(conj.modulus == c1.modulus);
-    assert(conj.angle == (-c1.angle + 2 * M_PI));
-    num_tests_passed++;
-}

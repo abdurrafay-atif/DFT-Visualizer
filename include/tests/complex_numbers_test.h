@@ -1,20 +1,25 @@
-// tests defining complex numbers from rectangular coordinates
-void test_define_rect_to_polar_both_positive();
-void test_define_rect_to_polar_imaginary_negative();
-void test_define_rect_to_polar_real_negative();
-void test_define_rect_to_polar_both_negative();
+// testing the normalize_angle() function
+void test_normalize_angle_no_change(); 
+void test_normalize_angle_negative_angle();
+void test_normalize_angle_large_negative();
+void test_normalize_angle_over_angle();
+void test_normalize_angle_large_positive();
+void test_normalize_angle_edge_cases(); // 0 & 2 * M_PI
 
-// tests defining complex numbers from polar coordinates
-void test_define_polar_to_rect();
-void test_define_polar_to_rect_neg_mod();
-void test_define_polar_to_rect_neg_angle();
-void test_define_polar_to_rect_over_angle();
+// testing the complex_num_init() function
+void test_complex_num_init_error();
+void test_complex_num_init_both_pos();
+void test_complex_num_init_posneg();
+void test_complex_num_init_negpos();
+void test_complex_num_init_both_neg();
 
-// tests for complex arithmetic
-void test_complex_scale();
-void test_complex_add();
-void test_complex_sub();
-void test_complex_prod();
-void test_complex_pow();
-void test_complex_div();
-void test_complex_conj();
+// testing complex_num_rev_init() & complex_num_empty() functions
+void test_complex_num_rev_error();
+void test_complex_num_rev();
+void test_complex_num_empty();
+
+// testing print functions
+void test_complex_print_rect();
+void test_complex_print_pol();
+void test_complex_print_exp();
+void test_complex_print();
