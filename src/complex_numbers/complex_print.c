@@ -16,7 +16,6 @@ int complex_print_rect(complex_number_t cn, FILE *file)
 }
 
 // prints the complex number in this form: "|z|∠z"
-// converts the angle to degrees
 int complex_print_polar(complex_number_t cn, FILE *file)
 {
     // handling invalid input
@@ -24,7 +23,7 @@ int complex_print_polar(complex_number_t cn, FILE *file)
     {
         return 1;
     }
-    fprintf(file, "|%.2lf|∠%.2lf°", cn.modulus, cn.angle * 180 / M_PI);
+    fprintf(file, "|%.2lf|∠%.2lf°", cn.modulus, cn.angle);
     return 0;
 }
 

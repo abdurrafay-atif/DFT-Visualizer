@@ -3,12 +3,21 @@
 
 #include "src/dft.h"
 
-// main functions
-cvector_t *read_vector_from_file(char *filename);
-int plot_vector(cvector_t *v); // plots magnitude spectrum
-int write_vector_to_file(cvector_t *v, char *filename);
+// note: default format is RECT
 
-// helper functions
-double cvector_max(cvector_t *v);
+// reading vector from file
+int extract_complex_num_from_file(FILE *file, complex_number_t *cn, int format);
+int count_lines(FILE *file);
+cvector_t *read_cvector_from_file(char *filename, int format); 
+
+// plotting vectors (either time-domain or frequency-domain)
+double cvector_max(cvector_t *v); // for determining height of plot
+int plot_cvector(cvector_t *v); 
+
+// writing vectors to files
+int write_cvector_to_file(cvector_t *v, char *filename, int format);
+
+// helper functions for commands
+void print_help(FILE *file);
 
 #endif
