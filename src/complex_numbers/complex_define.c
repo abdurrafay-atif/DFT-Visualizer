@@ -9,7 +9,7 @@
 // The angle is always defined within 0 to 2 * PI; another function should be used to re-calibrate to -pi to pi
 int complex_num_init(complex_number_t *cn, double real, double imaginary)
 {
-    // handling invalid input
+    // handle invalid input
     if(cn == NULL)
     {
         return 1;
@@ -31,7 +31,7 @@ int complex_num_init(complex_number_t *cn, double real, double imaginary)
 // note: if negative modulus given, function returns error value
 int complex_num_rev_init(complex_number_t *cn, double modulus, double angle)
 {
-    // handling invalid input
+    // handle invalid input
     if(cn == NULL || modulus < 0)
     {
         return 1;
@@ -50,7 +50,7 @@ int complex_num_rev_init(complex_number_t *cn, double modulus, double angle)
 // this is a helper function for setting complex numbers in larger data structures
 int complex_num_empty(complex_number_t *cn)
 {
-    // handling invalid input
+    // handle invalid input
     if(cn == NULL)
     {
         return 1;

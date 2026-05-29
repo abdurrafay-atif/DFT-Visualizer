@@ -5,11 +5,6 @@ cvector_t *cvector_circ_reverse(cvector_t v)
 {
     // allocate a new vector
     cvector_t *reverse = cvector_init(v.vec, v.size);
-    // if the vector passed in was empty or has length 1 just return it
-    if(v.size <= 1)
-    {
-        return reverse;
-    }
     // calculate circularly reversed vector
     // involves switching each k & size - k - 1 element
     for(int ele = 1; ele <= (reverse->size) / 2; ele++)
@@ -23,8 +18,8 @@ cvector_t *cvector_circ_reverse(cvector_t v)
 // performs the circular shift operation on the passed in vector
 cvector_t *cvector_circ_shift(cvector_t v, int shift)
 {
-    // take modulus of shift with the length of the vector
-    shift = shift % v.size;
+    // take modulus of shift with the length of the vector (following accounts for negative shifts)
+    shift = ((shift % v.size) + v.size) % v.size;
     // allocate a new vector
     cvector_t *shifted = cvector_init(v.vec, v.size);
     // perform shifting (via modulus)
@@ -42,7 +37,7 @@ cvector_t *cvector_fourier_modulate(cvector_t v, int index)
     sinusoid_t *fourier_sinusoid = construct_sinusoid(1, (2 * M_PI * index) / v.size, 0, v.size);
     cvector_t *sinusoid_vec = cvector_init(fourier_sinusoid->samples, fourier_sinusoid->num_samples);
     // perform element-by-element product
-    cvector_t *modulation = cvector_element_prod(v, *sinusoid_vec);
+    cvector_t *modulation = cvector_element_product(v, *sinusoid_vec);
     // free malloc()'d material
     sinusoid_free(fourier_sinusoid);
     cvector_free(sinusoid_vec);

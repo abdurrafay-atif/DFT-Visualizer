@@ -29,7 +29,7 @@ BIN_APP =  $(BINDIR)/app
 SRCS_TEST = $(shell find $(TESTDIR) -name "*.c")
 OBJS_TEST = $(patsubst $(TESTDIR)/%.c, $(BUILDDIR)/$(TESTDIR)/%.o, $(SRCS_TEST))
 DEPS_TEST = $(patsubst $(TESTDIR)/%.c, $(BUILDDIR)/$(TESTDIR)/%.d, $(SRCS_TEST))
-BINS_TEST = $(patsubst $(TESTDIR)/%.c,$(BINDIR)/$(TESTDIR)/%,$(SRCS_TEST))
+BINS_TEST = $(patsubst $(TESTDIR)/%.c, $(BINDIR)/$(TESTDIR)/%,$(SRCS_TEST))
 
 # creates all binary files, both for main & for testing
 all: app test

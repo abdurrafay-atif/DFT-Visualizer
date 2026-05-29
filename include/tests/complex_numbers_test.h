@@ -19,7 +19,17 @@ void test_complex_num_rev();
 void test_complex_num_empty();
 
 // testing print functions
-void test_complex_print_rect();
-void test_complex_print_pol();
-void test_complex_print_exp();
-void test_complex_print();
+void test_complex_write_read_rect();
+void test_complex_write_read_pol();
+void test_complex_write_read_exp();
+void test_complex_write_read();
+
+// testing arithmetic functions
+void test_complex_scale();
+void test_complex_add();
+void test_complex_sub();
+void test_complex_prod();
+void test_complex_pow();
+void test_complex_inv();
+void test_complex_div();
+void test_complex_conj();

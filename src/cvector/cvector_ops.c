@@ -1,32 +1,34 @@
 #include "../include/src/cvector.h"
 
-// places a complex number at index 'ele' in the vector via cartesian coordinates
-int cvector_place(cvector_t *v, int ele, double real, double imaginary)
+// places a complex number at the specified index in the vector via cartesian coordinates
+int cvector_place(cvector_t *v, int index, double real, double imaginary)
 {
     // error-handling
-    if(v == NULL || ele < 0 || ele >= v->size)
+    if(v == NULL || index < 0 || index >= v->size)
     {
         return 1;
     }
-    return complex_num_init(&v->vec[ele], real, imaginary);
+    complex_num_init(&v->vec[index], real, imaginary);
+    return 0;
 }
 
-// places a complex number at index 'ele' in the vector via polar coordinates
-int cvector_rev_place(cvector_t *v, int ele, double modulus, double angle)
+// places a complex number at the specified index in the vector via polar coordinates
+int cvector_rev_place(cvector_t *v, int index, double modulus, double angle)
 {
     // error-handling
-    if(v == NULL || ele < 0 || ele >= v->size)
+    if(v == NULL || index < 0 || index >= v->size)
     {
         return 1;
     }
-    return complex_num_rev_init(&v->vec[ele], modulus, angle);
+    complex_num_rev_init(&v->vec[index], modulus, angle);
+    return 0;
 }
 
 // applies the complex conjugate onto each element of 'v,' stores into a new vector
 cvector_t *cvector_conj(cvector_t v)
 {
     // initialize the conjugate vector
-    cvector_t *conj = cvector_init(v.vec, v.size);
+    cvector_t *conj = cvector_init_empty(v.size);
     // apply conjugate to each element
     for(int ele = 0; ele < conj->size; ele ++)
     {
@@ -67,7 +69,7 @@ cvector_t *cvector_add(cvector_t v1, cvector_t v2)
 }
 
 // multiplies the elements of the two vectors together to form a new vector, element-by-element
-cvector_t *cvector_element_prod(cvector_t v1, cvector_t v2)
+cvector_t *cvector_element_product(cvector_t v1, cvector_t v2)
 {
     // error-handling
     if(v1.size != v2.size)

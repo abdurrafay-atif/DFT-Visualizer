@@ -28,11 +28,17 @@ int complex_num_rev_init(complex_number_t *cn, double modulus, double angle);
 int complex_num_empty(complex_number_t *cn);
 double normalize_angle(double angle);
 
-// printing complex numbers
-int complex_print_rect(complex_number_t cn, FILE *file);
-int complex_print_polar(complex_number_t cn, FILE *file);
-int complex_print_exp(complex_number_t cn, FILE *file);
-int complex_print(complex_number_t cn, FILE *file, int format);
+// writing complex numbers
+int complex_write_rect(FILE *file, complex_number_t cn);
+int complex_write_polar(FILE *file, complex_number_t cn);
+int complex_write_exp(FILE *file, complex_number_t cn);
+int complex_write(FILE *file, complex_number_t cn, int format);
+
+// reading complex numbers
+int complex_read_rect(FILE *file, complex_number_t *cn);
+int complex_read_polar(FILE *file, complex_number_t *cn);
+int complex_read_exp(FILE *file, complex_number_t *cn);
+int complex_read(FILE *file, complex_number_t *cn, int format);
 
 // complex number arithmetic
 int complex_scale(complex_number_t *scale, complex_number_t cn, double scaling_factor);

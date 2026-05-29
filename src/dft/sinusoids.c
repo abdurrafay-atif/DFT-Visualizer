@@ -3,7 +3,7 @@
 // constructs the sinusoid based on struct parameters
 sinusoid_t *construct_sinusoid(double amplitude, double ang_freq, double phase, int num_samples)
 {
-    // error-handling
+    // handle invalid input
     if(amplitude < 0 || num_samples < 1)
     {
         return NULL;
@@ -30,7 +30,7 @@ sinusoid_t *construct_sinusoid(double amplitude, double ang_freq, double phase, 
 // free's all malloc'd material in the sinusoid_t struct
 int sinusoid_free(sinusoid_t *sinusoid)
 {
-    // error-handling
+    // handle invalid input
     if(sinusoid == NULL)
     {
         return 1;
@@ -41,9 +41,22 @@ int sinusoid_free(sinusoid_t *sinusoid)
     return 0;
 }
 
-// prints the sinusoid in this form: A*cos((w)*n + phi)
-// does not print \n (must be done manually)
-void print_sinusoid_as_cosine(sinusoid_t sinusoid, FILE *file)
+// reads the sinusoid in this form: A*cos((w)*n + phi)
+sinusoid_t *read_sinusoid(FILE *file, int num_samples)
 {
-    fprintf(file, "%lf*cos((%lf)*n + %lf)", sinusoid.amplitude, sinusoid.ang_freq, sinusoid.phase);
+    // handle invalid input
+    if(file == NULL || num_samples < 1)
+    {
+        return NULL;
+    }
+    // obtain sinusoid parameters from file
+    double amplitude, ang_freq, phase;
+    int ret = fscanf(file, "%lf*cos((%lf)*n + %lf)", &amplitude, &ang_freq, &phase);
+    // check that fscanf() obtained each parameter
+    if(ret != 3)
+    {
+        return NULL; 
+    }
+    // construct sinusoid from the parameters obtained
+    return construct_sinusoid(amplitude, ang_freq, phase, num_samples);
 }

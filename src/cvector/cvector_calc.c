@@ -1,5 +1,22 @@
 #include "../include/src/cvector.h"
 
+// THIS FILE CONSISTS OF FUNCTIONS FOR CALCULATING CERTAIN QUANTITIES IN COMPLEX VECTORS
+
+// obtains the maximum element (modulus) of the given vector
+double cvector_max(cvector_t v)
+{
+    double max = -INFINITY;
+    for(int ele = 0; ele < v.size; ele++)
+    {
+        double curr = v.vec[ele].modulus;
+        if(curr > max)
+        {
+            max = curr;
+        }
+    }
+    return max;
+}
+
 // sums all the elements in the given vector
 // the result is a complex number
 int cvector_sum(complex_number_t *cn, cvector_t v)
@@ -31,9 +48,9 @@ int cvector_dot_product(complex_number_t *cn, cvector_t v1, cvector_t v2)
     // obtain conjugate of v1
     cvector_t *conj = cvector_conj(v1);
     // calculate dot product (first find element product, then sum all elements)
-    cvector_t *ele_prod = cvector_element_prod(*conj, v2);
+    cvector_t *ele_prod = cvector_element_product(*conj, v2);
     cvector_sum(cn, *ele_prod);
-    // conj was malloc()'ed so must be free()'d
+    // free() material malloc()'d in this function
     cvector_free(conj);
     cvector_free(ele_prod);
     return 0;
