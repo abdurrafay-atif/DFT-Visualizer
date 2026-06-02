@@ -15,7 +15,7 @@ This application is a C terminal-based program where the user can input a comple
 * Complex Numbers take 3 Forms:
 * * Rectangular Form (1 in CMD Args) --> Real + j*(Imaginary)
 * * Polar Form (2 in CMD Args) --> |Modulus|∠Angle
-* * Exponential Form (3 in CMD Args) --> Modulus*e^(j*(Angle))
+* * Exponential Form (3 in CMD Args) --> Modulus* e^(j*(Angle)) [note: there should NOT be a space between * & e, it is just there due to README.md formatting]
 * Complex Numbers must be in the above forms for the program to work.
 * It is recommended while using this program to stick to only one form during any one session, rather than constantly switch between forms.
 
