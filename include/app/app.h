@@ -8,7 +8,7 @@
 // limits
 #define MAX_VECTORS             20
 #define BUFSIZE                 2048
-#define ARGSIZE                 2048
+#define ARGSIZE                 512
 
 // error codes for arguments
 #define CORRECT_ARGS            0
@@ -26,12 +26,12 @@ struct visualizer_info
     // information from command line arguments
     char *input_file;
     char *output_file;
-    int complex_num_format;
-    int echo; // on if output not stdout
+    char complex_num_format;
+    char echo; // on if output not stdout
     // vector info
     cvector_t *vec; // input vector 
     cvector_t *vec_etc[MAX_VECTORS]; // other vectors (for computations)
-    int num_vectors;
+    char num_vectors;
 };
 
 // utilities.c

@@ -23,6 +23,11 @@ cvector_t *dft_zero_pad(cvector_t input, int zero_pad)
 {
     // create a new vector which consists of the input vector + "zero-pad" # of zeros
     cvector_t *padded_input = cvector_append_zeros(input, zero_pad);
+    // check that the vector is non-NULL
+    if(padded_input == NULL)
+    {
+        return NULL;
+    }
     // apply the DFT to this new, zero-padded vector
     cvector_t *freq = dft(*padded_input);
     cvector_free(padded_input);

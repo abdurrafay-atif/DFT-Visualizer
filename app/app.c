@@ -1,54 +1,14 @@
 #include "../include/app/app.h"
 
 // THIS IS AN INTERACTIVE DFT / IDFT VISUALIZER
-// ARGUMENTS:
-// 1. ./dft_visualizer
-// 2. [input file] 
-// 3. [output file] ("stdout" --> standard output)
-// 4. [complex num format] (if not included, defaults to RECT) 
-
-// COMMANDS INCLUDED:
-// help --> Lists all possible commands
-// exit --> Stops the program
-// reset --> Resets vector to one from input file
-// save --> Adds the current vector to the list of vectors 
-// num_vectors --> Prints the # of vectors in the visualizer_info struct
-// import [input file] --> Adds the specified vector to the list of vectors (fails if exceeding limit)
-// export [output file] [index] --> Exports the specified vector to the given file 
-// display --> prints the complex vector (calls the cvector_display() function)
-// list --> prints all vectors in the vector list 
-// plot [height] [low] [high] --> prints the plot of the vector
-// dft [zero-pad] --> applies the DFT with a zero-pad to the vector (0 for standard DFT)
-// idft --> applies the Inverse DFT to the vector
-// conj --> applies the conjugate function to the vector
-// scale [Re{scaling_factor}] [Im{scaling_factor}] --> Scales the complex number by the specified factor
-// add [index] --> Adds the current vector with the one at the specified index
-// product [index] --> Applies element-by-element product with the one at the specified index
-// convolution [index] --> Applies convolution of the vector with the one at the specified index
-// circ_reverse --> Applies the circular reversal function to the vector
-// circ_shift [shift] --> Applies the specified shift to the vector
-// fourier_modulate [index] --> Applies fourier modulation to the vector
-
-// NOTES:
-// It is reccommended to place input / output files in the "app/files" folder (though not required)
-// Complex Number Formats: 1 (RECT) --> DEFAULT, 2 (POLAR), 3 (EXPONENTIAL)
-// NOTE about Formats: Do not enter '0', this will return an error. Any other integer is fine
-// MUST set Complex Number Format accordingly before setting input / output files
-// COMPLEX FORMAT is saved, so ensure all complex number files are in the format you desire
-// It is reccommended you choose one format & stick with it to avoid trouble
-
-// FILE FORMAT
-// Each Line Consists of Complex Number (Add New Line to Each)
-// RECT: a + j*(b); a = real, b = imaginary
-// POLAR: |a|∠b; a = modulus, b = angle (in radians)
-// EXP: a*e^(j*(b)); a = modulus, b = angle (in radians)
+// READ THE README.MD FILE FOR INFORMATION ON HOW TO USE
 int main(int argc, char *argv[])
 {
     // ensure that the user inputted all necessary arguments for the program
     if(argc != 4)
     {
         printf("Usage: ./bin/app [input file] [output file] [complex num format]\n");
-        printf("Complex Num Formats: 1 (RECT), 2 (POLAR), 3 (EXP) (Default: RECT)\n");
+        printf("Note: Type 'stdout' in [output field] to display program on terminal\n");
         return INCORRECT_NUM_ARGS;
     }
     // form struct consisting of information from command line arguments & current vectors
@@ -67,6 +27,7 @@ int main(int argc, char *argv[])
     }
     info.num_vectors = 0;
     // open output file (if "stdout" then it is just standard output)
+    // echo = 1 means the command line will also output (if being transmitted to another file)
     FILE *output;
     if(strncmp(info.output_file, "stdout", 6) == 0)
     {
@@ -90,6 +51,11 @@ int main(int argc, char *argv[])
         fgets(in, BUFSIZE, stdin);
         int len = strlen(in);
         remove_new_line(buf, in, len);
+        // if input is empty, skip
+        if(len == 1)
+        {
+            continue;
+        }
         // echo user input to file if needed
         if(info.echo)
         {
@@ -140,38 +106,71 @@ int main(int argc, char *argv[])
         }
         else if(strncmp(buf, "import", 6) == 0)
         {
-            // extract input file from input
-            char *input_file;
-            int ret = sscanf(buf, "%*s %s", input_file);
-            if(ret == 1)
+            // check that vector limit hasn't been succeeded
+            if(info.num_vectors > MAX_VECTORS)
             {
-                fprintf(output, "failed to extract input file from user.\n");
+                fprintf(output, "sorry, cannot exceed %d saved vectors.\n", MAX_VECTORS);
             }
             else
             {
-                int fail = cvector_set(input_file, info.complex_num_format);
-                if(!fail)
+                // extract input file from input
+                char input_file[ARGSIZE];
+                int ret = sscanf(buf, "%*s %s", input_file);
+                // check that sscanf() extracted correct inputs
+                if(ret == 1)
                 {
-                    fprintf(output, "successfully saved current vector at index %d.\n", info.num_vectors);
-                    info.num_vectors++;
+                    fprintf(output, "failed to extract input file from user.\n");
+                }
+                else
+                {
+                    info.vec_etc[info.num_vectors] = cvector_set(input_file, info.complex_num_format);
+                    if(info.vec_etc[info.num_vectors] != NULL)
+                    {
+                        fprintf(output, "successfully imported vector to index %d\n", info.num_vectors);
+                        info.num_vectors++;
+                    }
+                    else
+                    {
+                        fprintf(output, "failed to import vector to index %d\n", info.num_vectors);
+                        fprintf(output, "please check that your input file exists and is in the correct format.\n");
+                    }
                 }
             }
         }
         else if(strncmp(buf, "export", 6) == 0)
         {
-            char *output_file;
+            char output_file[ARGSIZE];
             int index;
             int ret = sscanf(buf, "%*s %s %d", output_file, &index);
-            if(ret == 2 || index <= 0 || index >= info.num_vectors)
+            if(ret != 2 || index < 0 || index >= info.num_vectors)
             {
                 fprintf(output, "failed to extract arguments or user put incorrect / invalid arguments.\n");
                 fprintf(output, "index must be within the bounds of the list of vectors.\n");
-                fprintf(output, "enter 'num_vectors' to determine how many vectors you have saved.\n");
+                fprintf(output, "enter 'list' to determine indices of vectors you have saved.\n");
             }
             else
             {
-                cvector_write(output, *info.vec_etc[index], info.complex_num_format);
+                FILE *export = fopen(output_file, "w+");
+                cvector_write(export, *info.vec_etc[index], info.complex_num_format);
+                fclose(export);
                 fprintf(output, "vector at index %d successfully exported to file '%s'\n", index, output_file);
+            }
+        }
+        else if(strncmp(buf, "set", 3) == 0)
+        {
+            // extract index from command line
+            int index;
+            int ret = sscanf(buf, "%*s %d", &index);
+            // if ret != 1 or index out of bounds, something went wrong
+            if(ret != 1 || index < 0 || index >= info.num_vectors)
+            {
+                fprintf(output, "input does not provide [index] or index is out-of-bounds.\n");
+            }
+            else // perform set
+            {
+                cvector_t *old = info.vec;
+                info.vec = info.vec_etc[index];
+                cvector_free(old);
             }
         }
         else if(strncmp(buf, "display", 7) == 0)
@@ -278,7 +277,7 @@ int main(int argc, char *argv[])
             // extract real & imaginary components from command line arguments
             double real, imaginary;
             int ret = sscanf(buf, "%*s %lf %lf", &real, &imaginary);
-            if(ret != 1)
+            if(ret != 2)
             {
                 fprintf(output, 
                     "this command requires two double entries [real & imaginary parts of scale] as arguments.\n");
@@ -309,9 +308,11 @@ int main(int argc, char *argv[])
             // obtain index argument
             int index;
             int ret = sscanf(buf, "%*s %d", &index);
-            if(ret != 1)
+            if(ret != 1 || index < 0 || index >= info.num_vectors)
             {
-                fprintf(output, "this command requires one double entry [index of vector in list] as an argument.\n");
+                fprintf(output, "this command requires one integer entry [index of vector in list] as an argument.\n");
+                fprintf(output, "index must be within the bounds of the list of vectors.\n");
+                fprintf(output, "enter 'list' to determine indices of vectors you have saved.\n");
             }
             else
             {
@@ -336,9 +337,11 @@ int main(int argc, char *argv[])
             // obtain index argument
             int index;
             int ret = sscanf(buf, "%*s %d", &index);
-            if(ret != 1)
+            if(ret != 1 || index < 0 || index >= info.num_vectors)
             {
-                fprintf(output, "this command requires one double entry [index of vector in list] as an argument.\n");
+                fprintf(output, "this command requires one integer entry [index of vector in list] as an argument.\n");
+                fprintf(output, "index must be within the bounds of the list of vectors.\n");
+                fprintf(output, "enter 'list' to determine indices of vectors you have saved.\n");
             }
             else
             {
@@ -363,9 +366,11 @@ int main(int argc, char *argv[])
             // obtain index argument
             int index;
             int ret = sscanf(buf, "%*s %d", &index);
-            if(ret != 1)
+            if(ret != 1 || index < 0 || index >= info.num_vectors)
             {
-                fprintf(output, "this command requires one double entry [index of vector in list] as an argument.\n");
+                fprintf(output, "this command requires one integer entry [index of vector in list] as an argument.\n");
+                fprintf(output, "index must be within the bounds of the list of vectors.\n");
+                fprintf(output, "enter 'list' to determine indices of vectors you have saved.\n");
             }
             else
             {
@@ -401,7 +406,7 @@ int main(int argc, char *argv[])
                 cvector_free(old);
             }
         }
-        else if(strncmp(buf, "circ_shift", 11) == 0)
+        else if(strncmp(buf, "circ_shift", 10) == 0)
         {
             // obtain index argument
             int shift;
@@ -441,7 +446,7 @@ int main(int argc, char *argv[])
             {
                 // perform operation
                 cvector_t *old = info.vec;
-                info.vec = cvector_circ_shift(*info.vec, index);
+                info.vec = cvector_fourier_modulate(*info.vec, index);
                 // check that operation worked (in case input file was corrupted)
                 if(info.vec == NULL)
                 {
@@ -459,6 +464,7 @@ int main(int argc, char *argv[])
                 }
             }
         }
+        // argument does not exist
         else
         {
             print_string_before_space(output, buf);
@@ -467,7 +473,6 @@ int main(int argc, char *argv[])
         // force output 
         fflush(output);
     }
-    // cleanup
     cleanup(info, output);
     return 0; // no errors during program
 }

@@ -13,7 +13,7 @@ char *help_strings[] =
     "reset --> Resets state of program to initial arguments\n", 
     "save --> Adds the current vector to the list of vectors\n", 
     "num_vectors --> Prints the # of vectors saved\n", 
-    "import [input file] [file type] --> Adds the specified vector to the list of vectors (fails if exceeding limit)\n", 
+    "import [input file] --> Adds the specified vector to the list of vectors (fails if exceeding limit)\n", 
     "export [output file] [index] --> Exports the specified vector to the given file\n",
     "set [index] --> Sets the display vector to the vector at the specified index\n",
     "display --> outputs the complex vector\n",
@@ -48,6 +48,8 @@ int validate_input_args(struct visualizer_info *info, char *argv[])
     int complex_num_format = atoi(argv[3]);
     if(complex_num_format == 0)
     {
+        printf("Complex Num Formats: 1 (RECT), 2 (POLAR), 3 (EXP) (Default: RECT)\n");
+        printf("Note: Inserting '0' will lead to an error.\n");
         return FILE_TYPE_NON_INT;
     }
     // set struct fields
@@ -145,7 +147,7 @@ void remove_new_line(char *output, char *input, int len)
 void print_string_before_space(FILE *file, char *str) 
 {
     int c = 0;
-    // print the string until a space bar is hit (or ARGSIZE limit is exceeded)
+    // print the string until a space bar is hit (or ARGSIZE limit is exceeded or at end of string)
     while(str[c] != '\0' && c < ARGSIZE && str[c] != ' ')
     {
         fprintf(file, "%c", str[c]);

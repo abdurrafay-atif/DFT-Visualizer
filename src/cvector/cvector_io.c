@@ -75,7 +75,7 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
         return 1;
     }
     // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
-    for(int line = 0; line < v.size * 3 + 5; line++)
+    for(int line = 0; line < v.size * 3 + 6; line++)
     {
         fprintf(file, "-");
     }
@@ -90,7 +90,7 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
         double curr_height = max_ele - step * level;
         // for each element in vector, determine if it surpasses this level
         // if it does, print a dot for it. otherwise, print nothing for it
-        for(int ele = low; ele < high; ele++)
+        for(int ele = low; ele <= high; ele++)
         {
             if(v.vec[ele].modulus >= curr_height)
             {
@@ -106,16 +106,20 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
         fprintf(file, "\n");
     }
     // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
-    for(int line = 0; line < v.size * 3 + 5; line++)
+    for(int line = 0; line < v.size * 3 + 6; line++)
     {
         fprintf(file, "-");
     }
     fprintf(file, "\n");
     // print indices (mod 100)
-    for(int index = low; index < high; index++)
+    for(int index = low; index <= high; index++)
     {
-        fprintf(file, "%d  ", index % 100);
+        fprintf(file, "%d ", index % 100);
         // add a space if it is a single-digit index
+        if(index % 100 < 10)
+        {
+            fprintf(file, " ");
+        }
     }
     fprintf(file, "\n");
     return 0;
