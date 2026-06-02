@@ -40,11 +40,9 @@ app: $(BIN_APP)
 # creates binary files only for testing
 # also runs all the tests
 test: $(BINS_TEST) 
-	clear
 	@for exe in ./$(BINDIR)/$(TESTDIR)/*; do \
 		leaks --atExit -- ./$${exe}; \
 	done
-	make clean
 
 # creates the binary file for the main method
 $(BIN_APP): $(OBJS_APP) $(OBJS)

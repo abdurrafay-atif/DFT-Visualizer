@@ -53,8 +53,8 @@ CN3
 CNX
 
 ```
-    * CN1-X must be formatted based on the convention of complex numbers you desire (RECT, POLAR, EXP).
-    * There MUST be a new line at the end, or the last complex number will not register.
+* CN1-X must be formatted based on the convention of complex numbers you desire (RECT, POLAR, EXP).
+* There MUST be a new line at the end, or the last complex number will not register.
 
 ## Operations / Transformations
 NOTE: To learn more about certain operations, it may be worthwhile to do some research online on them.
@@ -153,19 +153,19 @@ DFT_VISUALIZER> plot 10 0 13
 DFT_VISUALIZER> dft 0
 DFT succeeded.
 DFT_VISUALIZER> plot 10 0 13
-------------------------------------------------------------------------------
-                  *                       |122.25
-                  *                       |110.02
-                  *                       |97.80
-               *  *                       |85.57
-               *  *                       |73.35
-*              *  *  *  *  *     *     *  |61.12
-*              *  *  *  *  *     *  *  *  |48.90
-*     *        *  *  *  *  *  *  *  *  *  |36.67
-*  *  *  *     *  *  *  *  *  *  *  *  *  |24.45
-*  *  *  *  *  *  *  *  *  *  *  *  *  *  |12.22
-------------------------------------------------------------------------------
-0  1  2  3  4  5  6  7  8  9  10 11 12 13 
+------------------------------------------------
+                                 *        |114.71
+                                 *        |103.24
+         *                       *     *  |91.77
+         *  *                 *  *     *  |80.30
+         *  *           *  *  *  *  *  *  |68.83
+*        *  *  *     *  *  *  *  *  *  *  |57.36
+*        *  *  *  *  *  *  *  *  *  *  *  |45.88
+*  *     *  *  *  *  *  *  *  *  *  *  *  |34.41
+*  *     *  *  *  *  *  *  *  *  *  *  *  |22.94
+*  *  *  *  *  *  *  *  *  *  *  *  *  *  |11.47
+------------------------------------------------
+0  1  2  3  4  5  6  7  8  9  10 11 12 13  
 DFT_VISUALIZER> exit
 ```
 ### Operations (DFT, Arithmetic, Transformations)
@@ -202,3 +202,7 @@ If you are using this program and you notice an error, do the following:
 * Run 'make test' to make sure your fix did not affect the output (only necessary if you edit files under the 'src' directory).
 * Make a pull request with the screenshot given.
 
+# Adding Features
+* If you desire for a feature to be added, let me know and I can add it (if you have a function which you want to implement, place it under src/other with the necessary header files and make a pull request).
+* If I accept your pull request, I will place the function where necessary in the program alongside whatever feature you want to implement (usually a command you desire).
+* Note that I may not insert just any feature, as some features may require a lot of work for little gain, may be unnecessary, or may not fit with the goal of the program.

@@ -31,7 +31,7 @@ struct visualizer_info
     // vector info
     cvector_t *vec; // input vector 
     cvector_t *vec_etc[MAX_VECTORS]; // other vectors (for computations)
-    char num_vectors;
+    int num_vectors;
 };
 
 // utilities.c

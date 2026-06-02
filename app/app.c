@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
         {
             // extract args for the "plot" command
             int height, low, high;
-            int ret = sscanf(buf, "%*s %d %d %d ", &height, &low, &high);
+            int ret = sscanf(buf, "%*s %d %d %d", &height, &low, &high);
             // check that sscanf() extracted the input correctly (and input entered correctly)
             if(ret != 3)
             {
@@ -208,6 +208,9 @@ int main(int argc, char *argv[])
                 if(plot_fail)
                 {
                     fprintf(output, "plot failed due to invalid arguments, please try again.\n");
+                    fprintf(output, "height must be a positive value.\n");
+                    fprintf(output, "low & high must be within bounds of the vector.\n");
+                    fprintf(output, "bounds of vector are 0 (inclusive) & vector size (exclusive).\n");
                 }
             }
         }
@@ -217,7 +220,9 @@ int main(int argc, char *argv[])
             cvector_t *old = info.vec;
             // obtain zero-pad (if it is given)
             int pad;
-            int ret = sscanf(buf, "%*s %d\n", &pad);
+            int ret = sscanf(buf, "%*s %d ", &pad);
+            printf("%s\n", buf);
+            printf("%d\n", pad);
             // if ret != 1, something went wrong
             if(ret != 1)
             {
@@ -472,6 +477,12 @@ int main(int argc, char *argv[])
         }
         // force output 
         fflush(output);
+        // replace all input with spaces (to prevent prior inputs from interfering with current inputs)
+        for(int c = 0; c < len; c++)
+        {
+            in[c] = ' ';
+            buf[c] = ' ';
+        }
     }
     cleanup(info, output);
     return 0; // no errors during program
