@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
         else if(strncmp(buf, "save", 4) == 0)
         {
             // check that saving is possible
-            if(info.num_vectors > MAX_VECTORS)
+            if(info.num_vectors >= MAX_VECTORS)
             {
                 fprintf(output, "sorry, cannot exceed %d saved vectors.\n", MAX_VECTORS);
             }
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
         else if(strncmp(buf, "import", 6) == 0)
         {
             // check that vector limit hasn't been succeeded
-            if(info.num_vectors > MAX_VECTORS)
+            if(info.num_vectors >= MAX_VECTORS)
             {
                 fprintf(output, "sorry, cannot exceed %d saved vectors.\n", MAX_VECTORS);
             }
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
                 char input_file[ARGSIZE];
                 int ret = sscanf(buf, "%*s %s", input_file);
                 // check that sscanf() extracted correct inputs
-                if(ret == 1)
+                if(ret != 1)
                 {
                     fprintf(output, "failed to extract input file from user.\n");
                 }
@@ -126,12 +126,12 @@ int main(int argc, char *argv[])
                     info.vec_etc[info.num_vectors] = cvector_set(input_file, info.complex_num_format);
                     if(info.vec_etc[info.num_vectors] != NULL)
                     {
-                        fprintf(output, "successfully imported vector to index %d\n", info.num_vectors);
+                        fprintf(output, "successfully imported vector to index %d.\n", info.num_vectors);
                         info.num_vectors++;
                     }
                     else
                     {
-                        fprintf(output, "failed to import vector to index %d\n", info.num_vectors);
+                        fprintf(output, "failed to import vector to index %d.n", info.num_vectors);
                         fprintf(output, "please check that your input file exists and is in the correct format.\n");
                     }
                 }
@@ -169,8 +169,9 @@ int main(int argc, char *argv[])
             else // perform set
             {
                 cvector_t *old = info.vec;
-                info.vec = info.vec_etc[index];
+                info.vec = cvector_init(info.vec_etc[index]->vec, info.vec_etc[index]->size);
                 cvector_free(old);
+                fprintf(output, "vector successfully set to vector at index %d\n", index);
             }
         }
         else if(strncmp(buf, "display", 7) == 0)
@@ -221,8 +222,6 @@ int main(int argc, char *argv[])
             // obtain zero-pad (if it is given)
             int pad;
             int ret = sscanf(buf, "%*s %d ", &pad);
-            printf("%s\n", buf);
-            printf("%d\n", pad);
             // if ret != 1, something went wrong
             if(ret != 1)
             {
@@ -252,7 +251,7 @@ int main(int argc, char *argv[])
             // check that operation worked (in case input file was corrupted)
             if(info.vec == NULL)
             {
-                fprintf(output, "IDFT Failed.\n");
+                fprintf(output, "IDFT failed.\n");
                 info.vec = old;
             }
             else
@@ -356,12 +355,12 @@ int main(int argc, char *argv[])
                 // check that operation worked (in case input file was corrupted)
                 if(info.vec == NULL)
                 {
-                    fprintf(output, "failed to perform element by element product of the two vectors\n");
+                    fprintf(output, "failed to perform element by element product of the two vectors.\n");
                     info.vec = old;
                 }
                 else
                 {
-                    fprintf(output, "element by element product succeeded\n");
+                    fprintf(output, "element by element product succeeded.\n");
                     cvector_free(old);
                 }
             }
@@ -385,12 +384,12 @@ int main(int argc, char *argv[])
                 // check that operation worked (in case input file was corrupted)
                 if(info.vec == NULL)
                 {
-                    fprintf(output, "failed to perform circular convolution of the two vectors\n");
+                    fprintf(output, "failed to perform circular convolution of the two vectors.\n");
                     info.vec = old;
                 }
                 else
                 {
-                    fprintf(output, "circular convolution succeeded\n");
+                    fprintf(output, "circular convolution succeeded.\n");
                     cvector_free(old);
                 }
             }
@@ -428,12 +427,12 @@ int main(int argc, char *argv[])
                 // check that operation worked (in case input file was corrupted)
                 if(info.vec == NULL)
                 {
-                    fprintf(output, "failed to perform circular shift by %d\n", shift);
+                    fprintf(output, "failed to perform circular shift by %d.\n", shift);
                     info.vec = old;
                 }
                 else
                 {
-                    fprintf(output, "circular shift by %d succeeded\n", shift);
+                    fprintf(output, "circular shift by %d succeeded.\n", shift);
                     cvector_free(old);
                 }
             }
@@ -456,14 +455,14 @@ int main(int argc, char *argv[])
                 if(info.vec == NULL)
                 {
                     fprintf(output, 
-                        "failed to perform fourier modulation with fourier sinusoid at index %d\n", 
+                        "failed to perform fourier modulation with fourier sinusoid at index %d.\n", 
                         index % info.vec->size);
                     info.vec = old;
                 }
                 else
                 {
                     fprintf(output, 
-                        "fourier modulation with fourier sinusoid at index %d succeeded\n", 
+                        "fourier modulation with fourier sinusoid at index %d succeeded.\n", 
                         index % info.vec->size);
                     cvector_free(old);
                 }

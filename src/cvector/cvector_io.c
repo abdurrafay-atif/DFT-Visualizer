@@ -74,8 +74,8 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
     {
         return 1;
     }
-    // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
-    for(int line = 0; line < v.size * 3 + 6; line++)
+    // print a line below the plot (length of vector * 3 + 6 spots for the vertical axis space)
+    for(int line = 0; line < (high - low + 1) * 3 + 6; line++)
     {
         fprintf(file, "-");
     }
@@ -105,8 +105,8 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
         fprintf(file, "|%.2lf", curr_height);
         fprintf(file, "\n");
     }
-    // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
-    for(int line = 0; line < v.size * 3 + 6; line++)
+    // print a line below the plot (length of vector * 3 + 6 spots for the vertical axis space)
+    for(int line = 0; line < (high - low + 1) * 3 + 6; line++)
     {
         fprintf(file, "-");
     }

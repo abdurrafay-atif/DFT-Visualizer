@@ -93,6 +93,11 @@ cvector_t *cvector_set(char *filename, int format)
 {
     // open input file
     FILE *input = fopen(filename, "r");
+    // check if file exists
+    if(input == NULL)
+    {
+        return NULL;
+    }
     // obtain # of complex numbers via the count_lines() helper function
     int size = count_lines(input);
     // initialize the vector 
@@ -104,7 +109,7 @@ cvector_t *cvector_set(char *filename, int format)
     if(ret != 0)
     {
         printf("please ensure your input file is in the correct format.\n");
-        printf("each Complex Number must be listed in its own line.\n");
+        printf("each complex number must be listed in its own line.\n");
         printf("RECT: a + j*(b)\n");
         printf("POLAR: |a|∠b\n");
         printf("EXP: a*e^(j*(b))\n");
