@@ -7,9 +7,9 @@
 // tags for each way a complex number can be represented
 enum Complex_Format
 {
-    RECT = 0,
-    POLAR = 1,
-    EXP = 2,
+    RECT = 1,
+    POLAR = 2,
+    EXP = 3,
 };
 
 // a struct which represents a complex number in cartesian / polar form

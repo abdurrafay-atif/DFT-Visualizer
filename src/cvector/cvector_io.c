@@ -51,7 +51,13 @@ int cvector_read(FILE *file, cvector_t *v, int format)
     // read each complex number with complex_read() in the specified format
     for(int ele = 0; ele < v->size; ele++)
     {
-        complex_read(file, &v->vec[ele], format);
+        // attempt to read the complex number
+        int ret = complex_read(file, &v->vec[ele], format);
+        // check if reading failed (means incorrect format)
+        if(ret != 0) 
+        {
+            return 1;
+        }
     }
     return 0;
 }
@@ -68,41 +74,48 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high)
     {
         return 1;
     }
+    // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
+    for(int line = 0; line < v.size * 3 + 5; line++)
+    {
+        fprintf(file, "-");
+    }
+    fprintf(file, "\n");
     // parameters for plot
     double max_ele = cvector_max(v); // what the height represents
-    double step = height / max_ele; // what each dot represents
+    double step = max_ele / height; // what each dot represents
     // start plotting
     for(int level = 0; level < height; level++)
     {
         // calculate the current height based on the maximum level & step
         double curr_height = max_ele - step * level;
-        // print representative value for this height
-        fprintf(file, "%.2lf|", curr_height);
         // for each element in vector, determine if it surpasses this level
         // if it does, print a dot for it. otherwise, print nothing for it
-        for(int ele = 0; ele < v.size; ele++)
+        for(int ele = low; ele < high; ele++)
         {
             if(v.vec[ele].modulus >= curr_height)
             {
-                fprintf(file, "* ");
+                fprintf(file, "*  ");
             }
             else
             {
-                fprintf(file, "  ");
+                fprintf(file, "   ");
             }
         }
+        // print representative value for this height
+        fprintf(file, "|%.2lf", curr_height);
         fprintf(file, "\n");
     }
     // print a line below the plot (length of vector * 2 + 5 spots for the vertical axis space)
-    for(int line = 0; line < v.size * 2 + 5; line++)
+    for(int line = 0; line < v.size * 3 + 5; line++)
     {
         fprintf(file, "-");
     }
-    fprintf(file, "\n     "); // print 5 spaces so indices are placed accordingly
-    // place indices of the vector accordingly
-    for(int index = 0; index < v.size; index++)
+    fprintf(file, "\n");
+    // print indices (mod 100)
+    for(int index = low; index < high; index++)
     {
-        fprintf(file, "%d ", index);
+        fprintf(file, "%d  ", index % 100);
+        // add a space if it is a single-digit index
     }
     fprintf(file, "\n");
     return 0;

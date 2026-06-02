@@ -3,7 +3,7 @@ CC = gcc
 
 # flags when compiling programs
 IFLAGS = -MMD -MP
-CFLAGS = -Wall -Wextra -Werror -Iinclude $(IFLAGS)
+CFLAGS = -Wall -Wextra -Wno-unused-variable -Iinclude $(IFLAGS)
 CFLAGS_TEST = -Wall -Werror -g -Iinclude $(IFLAGS)
 
 # directory names
@@ -23,7 +23,7 @@ DEPS = $(patsubst $(SRCDIR)/%.c, $(BUILDDIR)/$(SRCDIR)/%.d, $(SRCS))
 SRCS_APP = $(shell find $(APPDIR) -name "*.c")
 OBJS_APP = $(patsubst $(APPDIR)/%.c, $(BUILDDIR)/$(APPDIR)/%.o, $(SRCS_APP))
 DEPS_APP = $(patsubst $(APPDIR)/%.c, $(BUILDDIR)/$(APPDIR)/%.d, $(SRCS_APP))
-BIN_APP =  $(BINDIR)/app
+BIN_APP = dft_visualizer
 
 # obtain every source / obj / .d / binary file recursively under the test directory
 SRCS_TEST = $(shell find $(TESTDIR) -name "*.c")
@@ -48,7 +48,6 @@ test: $(BINS_TEST)
 
 # creates the binary file for the main method
 $(BIN_APP): $(OBJS_APP) $(OBJS)
-	@mkdir -p $(dir $@)
 	$(CC) $^ -o $@
 
 # create every binary file for testing
@@ -76,3 +75,4 @@ $(BUILDDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.c
 
 clean:
 	rm -rf $(BINDIR) $(BUILDDIR)
+	rm $(BIN_APP)

@@ -26,10 +26,12 @@ int cvector_plot(FILE *file, cvector_t v, int height, int low, int high); // for
 // vector operations
 int cvector_place(cvector_t *v, int index, double real, double imaginary);
 int cvector_rev_place(cvector_t *v, int index, double modulus, double angle);
+cvector_t *cvector_append_zeros(cvector_t v, int zero_pad);
 cvector_t *cvector_conj(cvector_t v); // for dot product
 cvector_t *cvector_scale(cvector_t v, complex_number_t scale);
 cvector_t *cvector_add(cvector_t v1, cvector_t v2);
 cvector_t *cvector_element_product(cvector_t v1, cvector_t v2);
+cvector_t *cvector_circ_convolve(cvector_t v1, cvector_t v2);
 
 // vector calculations
 double cvector_max(cvector_t v);

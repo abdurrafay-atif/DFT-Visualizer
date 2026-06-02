@@ -11,6 +11,31 @@ int fequals(double a, double b)
     return fabs(a - b) < EPSILON;
 }
 
+// checks that two complex numbers are equal
+int complex_equal(complex_number_t cn1, complex_number_t cn2)
+{
+    return fequals(cn1.real, cn2.real) && fequals(cn1.imaginary, cn2.imaginary);
+}
+
+// check that two vectors are equal
+int cvector_equal(cvector_t v1, cvector_t v2)
+{
+    // two vectors of unequal size are not equal
+    if(v1.size != v2.size)
+    {
+        return 0;
+    }
+    // compare each corresponding entries, check if they are equivalent via complex_equal()
+    for(int ele = 0; ele < v1.size; ele++)
+    {
+        if(complex_equal(v1.vec[ele], v2.vec[ele]) == 0)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 // tests all files associated with the cvector_t struct
 int main()
 {
@@ -25,6 +50,7 @@ int main()
     test_cvector_add_error();
     test_cvector_add();
     test_cvector_ele_prod();
+    test_cvector_circ_conv();
     test_cvector_max();
     test_cvector_sum();
     test_cvector_dot();
@@ -200,6 +226,37 @@ void test_cvector_ele_prod()
     cvector_free(vec1);
     cvector_free(vec2);
     printf("Test 'test_cvector_ele_prod' --> PASSED!\n");
+}
+
+// tests the cvector_circ_convolve() function
+void test_cvector_circ_conv()
+{
+    // obtain LHS vector 
+    FILE *file1 = fopen("tests/files/convolve1.txt", "r");
+    cvector_t *vec1 = cvector_init_empty(4);
+    int ret1 = cvector_read(file1, vec1, RECT);
+    assert(ret1 == 0);
+    fclose(file1);
+    // obtain RHS vector
+    FILE *file2 = fopen("tests/files/convolve2.txt", "r");
+    cvector_t *vec2 = cvector_init_empty(4);
+    int ret2 = cvector_read(file2, vec2, RECT);
+    assert(ret2 == 0);
+    fclose(file2);
+    // obtain result vector
+    FILE *file3 = fopen("tests/files/convolve12res.txt", "r");
+    cvector_t *res = cvector_init_empty(4);
+    int ret3 = cvector_read(file3, res, RECT);
+    assert(ret3 == 0);
+    fclose(file3);
+    // perform circular convolution & verify results
+    cvector_t *conv = cvector_circ_convolve(*vec1, *vec2);
+    assert(cvector_equal(*res, *conv));
+    cvector_free(vec1);
+    cvector_free(vec2);
+    cvector_free(res);
+    cvector_free(conv);
+    printf("Test 'test_cvector_circ_conv' --> PASSED!\n");
 }
 
 // tests that the cvector_max() function gives the correct output

@@ -21,20 +21,12 @@ cvector_t *dft(cvector_t input)
 // adds the given # of zeros to the end
 cvector_t *dft_zero_pad(cvector_t input, int zero_pad)
 {
-    // handle invalid input
-    if(zero_pad < 0)
-    {
-        return NULL;
-    }
     // create a new vector which consists of the input vector + "zero-pad" # of zeros
-    cvector_t *padded_input = cvector_init_empty(input.size + zero_pad);
-    // place the input into the DFT vector
-    for(int ele = 0; ele < input.size; ele++)
-    {
-        cvector_place(padded_input, ele, input.vec[ele].real, input.vec[ele].imaginary);
-    }
+    cvector_t *padded_input = cvector_append_zeros(input, zero_pad);
     // apply the DFT to this new, zero-padded vector
-    return dft(*padded_input);
+    cvector_t *freq = dft(*padded_input);
+    cvector_free(padded_input);
+    return freq;
 }
 
 // applies the Inverse DFT (takes a vector from frequency domain to time domain)

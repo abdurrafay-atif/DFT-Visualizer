@@ -10,6 +10,7 @@ void test_cvector_scale();
 void test_cvector_add_error();
 void test_cvector_add();
 void test_cvector_ele_prod();
+void test_cvector_circ_conv();
 
 // testing functions in cvector_calc.c
 void test_cvector_max();
